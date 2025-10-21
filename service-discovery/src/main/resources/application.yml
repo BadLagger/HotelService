@@ -1,0 +1,17 @@
+server:
+  port: 9995  # порт, на котором запустится Eureka Server
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false  # этот сервер не должен регистрироваться сам у себя
+    fetch-registry: false        # этот сервер не должен получать список сервисов от других серверов
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/  # адрес этого же сервера
+  server:
+    wait-time-in-ms-when-sync-empty: 0  # отключает ожидание других серверов
+
+spring:
+  application:
+    name: service-discovery  # имя этого сервиса в registry
