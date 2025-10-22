@@ -15,3 +15,7 @@ eureka:
 spring:
   application:
     name: service-discovery  # имя этого сервиса в registry
+  security:
+    user:
+      name: ${EUREKA_LOGIN}
+      password: ${EUREKA_PASSWORD}
