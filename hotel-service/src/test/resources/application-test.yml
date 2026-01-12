@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: hotel-service
+  security:
+    enabled: false
+
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false
