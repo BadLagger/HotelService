@@ -6,9 +6,24 @@ spring:
     name: api-gateway
   cloud:
     gateway:
+      routes:
+        - id: booking-service
+          uri: lb://BOOKING-SERVICE
+          predicates:
+            - Path=/api/bookings/**
+          filters:
+            - StripPrefix=2
+
+        - id: hotel-service
+          uri: lb://HOTEL-SERVICE
+          predicates:
+            - Path=/api/hotels/**
+          filters:
+            - StripPrefix=2
+
       discovery:
         locator:
-          enabled: true
+          enabled: false
           lower-case-service-id: true
 
 eureka:
