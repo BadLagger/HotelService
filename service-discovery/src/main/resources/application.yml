@@ -1,5 +1,5 @@
 server:
-  port: 9995  # порт, на котором запустится Eureka Server
+  port: 9996  # порт, на котором запустится Eureka Server
 
 eureka:
   instance:
