@@ -1,5 +1,5 @@
 server:
-  port: 9996
+  port: 9997
 
 spring:
   application:
@@ -16,7 +16,7 @@ eureka:
     initial-instance-info-replication-interval-seconds: 5
     registry-fetch-interval-seconds: 5
     service-url:
-      defaultZone: http://${EUREKA_USERNAME:admin}:${EUREKA_PASSWORD:eureka-secret}@localhost:9995/eureka/
+      defaultZone: http://${EUREKA_LOGIN:admin}:${EUREKA_PASSWORD:eureka-secret}@localhost:9996/eureka/
   instance:
     prefer-ip-address: true
     lease-renewal-interval-in-seconds: 5
