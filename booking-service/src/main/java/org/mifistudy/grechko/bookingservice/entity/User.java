@@ -1,4 +1,4 @@
-package com.hotel.booking.entity;
+package org.mifistudy.grechko.bookingservice.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
