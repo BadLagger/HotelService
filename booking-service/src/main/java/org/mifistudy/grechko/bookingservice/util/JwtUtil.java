@@ -3,6 +3,7 @@ package org.mifistudy.grechko.bookingservice.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.mifistudy.grechko.bookingservice.entity.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -51,8 +52,13 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails, User userEntity) {
         Map<String, Object> claims = new HashMap<>();
+
+        claims.put("userId", userEntity.getId().toString());
+       // claims.put("email", userEntity.getEmail());
+        claims.put("role", userEntity.getRole().name());
+
         return createToken(claims, userDetails.getUsername());
     }
 
@@ -69,5 +75,13 @@ public class JwtUtil {
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    public String extractUserId(String token) {
+        return extractClaim(token, claims -> claims.get("userId", String.class));
+    }
+
+    public String extractUserRole(String token) {
+        return extractClaim(token, claims -> claims.get("role", String.class));
     }
 }

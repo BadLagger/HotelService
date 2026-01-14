@@ -53,20 +53,24 @@ public class AuthService {
                 java.util.List.of(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_USER"))
         );
 
-        String token = jwtUtil.generateToken(userDetails);
+        String token = jwtUtil.generateToken(userDetails, user);
 
         return new AuthResponse(token, user.getUsername(), user.getRole().name());
     }
 
     public AuthResponse authenticate(AuthRequest request) {
+
+        Optional<User> user = userRepository.findByUsername(request.getUsername());
+
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String token = jwtUtil.generateToken(userDetails);
 
-        Optional<User> user = userRepository.findByUsername(request.getUsername());
+        String token = jwtUtil.generateToken(userDetails, user.orElseThrow(()-> new RuntimeException("User not found after authentication")));
+
         String role = user.map(u -> u.getRole().name()).orElse("USER");
 
         return new AuthResponse(token, request.getUsername(), role);
