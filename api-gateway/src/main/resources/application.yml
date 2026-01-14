@@ -17,9 +17,9 @@ spring:
         - id: hotel-service
           uri: lb://HOTEL-SERVICE
           predicates:
-            - Path=/api/hotels/**
+            - Path=/api/hotels/**, /api/rooms/**
           filters:
-            - StripPrefix=2
+            - StripPrefix=1
 
       discovery:
         locator:
