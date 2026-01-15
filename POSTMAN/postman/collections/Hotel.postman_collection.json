@@ -1,0 +1,517 @@
+{
+  "info": {
+    "_postman_id": "8ad305b7-1e05-45e1-b9c4-44c87a5a8e8f",
+    "name": "Hotel",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "BookingService",
+      "item": [
+        {
+          "name": "RegisterNewUser",
+          "id": "0cc15bf2-cafc-40a8-809c-34d5a849a25b",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"user1\",\r\n    \"password\": \"user1\",\r\n    \"email\": \"user1@mail.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:9999/api/bookings/user/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9999",
+              "path": [
+                "api",
+                "bookings",
+                "user",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Status",
+          "id": "fde592b4-5d8f-4e85-af9e-db338c46dd64",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:9999/api/bookings/status",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9999",
+              "path": [
+                "api",
+                "bookings",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Auth",
+          "id": "d31b4785-0e39-492a-b14e-d87d213712cc",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin123\"\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:9999/api/bookings/user/auth",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9999",
+              "path": [
+                "api",
+                "bookings",
+                "user",
+                "auth"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CreateAdminUser",
+          "id": "1ef2acd4-12f8-497e-b355-01d132bca533",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc2ODI3NDAyMywiZXhwIjoxNzY4Mjc3NjIzfQ.YIy1ez8O3xJOdEsEvrbgYUYPugghoYPjVJSJrVYLvtM",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"admin_user\",\r\n    \"password\": \"3333\",\r\n    \"email\": \"admin_user@admin.com\",\r\n    \"role\": \"ADMIN\"\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:9999/api/bookings/user",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9999",
+              "path": [
+                "api",
+                "bookings",
+                "user"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DeleteUser",
+          "id": "834dfc3d-bcd6-4417-8cfc-855fb6ce1ab1",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc2ODI3NDAyMywiZXhwIjoxNzY4Mjc3NjIzfQ.YIy1ez8O3xJOdEsEvrbgYUYPugghoYPjVJSJrVYLvtM",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9999/api/bookings/user/61e6d2c6-e401-45ce-9c43-f9428d08e6cb",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9999",
+              "path": [
+                "api",
+                "bookings",
+                "user",
+                "61e6d2c6-e401-45ce-9c43-f9428d08e6cb"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetUsers",
+          "id": "2a8de044-68cd-4bd9-b4b3-6bd3439518c0",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJ1c2VySWQiOiJlN2FkNTYyNC0yYmQ3LTQ2Y2MtYWEyZS1lZDdjMmVhNTU4ZGIiLCJzdWIiOiJhZG1pbiIsImlhdCI6MTc2ODQzNjUzOSwiZXhwIjoxNzY4NDQwMTM5fQ.dBsCqYuznsV273d79ZCK5amYRu6QxRL3CuTyWT-ngbo",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9999/api/bookings/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9999",
+              "path": [
+                "api",
+                "bookings",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Booking",
+          "id": "da14b040-52dd-42c8-860c-17c081f28859",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInVzZXJJZCI6ImM0N2FkMGQzLWExOWYtNGEyNS1hZDY5LWJkY2JiODhlNzBjMCIsInN1YiI6InVzZXIxIiwiaWF0IjoxNzY4NDM3OTg2LCJleHAiOjE3Njg0NDE1ODZ9.6zdRKL05IQbNe1QrZatXobSL8gp8YpSoWIYBY-Ah2DQ",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"roomId\": \"34cc5f6d-e9e4-40f7-9655-7acf02341d04\",\r\n    \"hotelId\": \"45dde725-ab09-4c6c-9e6e-cf2bd5398d35\",\r\n    \"startDate\": \"2025-10-01\",\r\n    \"endDate\": \"2025-10-10\",\r\n    \"autoSelect\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:9999/api/bookings",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9999",
+              "path": [
+                "api",
+                "bookings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetBooking",
+          "id": "dead9109-ebd2-4d74-9409-71e33c997af9",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "GetBooking Copy",
+          "id": "65ba1ffd-59b9-4f6e-8f05-3eb97497a4b2",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "id": "0c0bfdf1-0804-45a5-a661-5c14c7020a29",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInVzZXJJZCI6ImNjMTBmMzBmLTQ0NDUtNGEzMi1iZWRiLWRlMDQwZTE5YTRiNiIsInN1YiI6InVzZXIxIiwiaWF0IjoxNzY4NDY1Mzg4LCJleHAiOjE3Njg0Njg5ODh9.e_STmq1HnMgob3RXN9dJdEQcdyziDLnBZC5afQEZVZg",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9999/api/bookings/c866b92e-2da9-4bcf-beb9-7a1c1d5d12fa",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9999",
+              "path": [
+                "api",
+                "bookings",
+                "c866b92e-2da9-4bcf-beb9-7a1c1d5d12fa"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "49663e3c-3d1b-4d65-8245-805d56a70697"
+    },
+    {
+      "name": "HotelService",
+      "item": [
+        {
+          "name": "Status",
+          "id": "dc3b9bcb-8290-4976-9c1d-c34acba25477",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:9999/api/hotels/status",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9999",
+              "path": [
+                "api",
+                "hotels",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "AddHotel",
+          "id": "cacf781b-5bd7-40f0-b222-a1b1b6668dad",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJ1c2VySWQiOiJiYWMwYjRmYy1lODk3LTQ2YzQtOWM2MC0yY2VjMDAwN2E1MjAiLCJzdWIiOiJhZG1pbiIsImlhdCI6MTc2ODQxMTUzMiwiZXhwIjoxNzY4NDE1MTMyfQ.KrWHvr3R13nlmxDLySeH-Zd3xVjRehr3uakm7mY4ZUI",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"CoolHotel\",\r\n    \"address\": \"Moscow, Arbat st. 1\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:9999/api/hotels",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9999",
+              "path": [
+                "api",
+                "hotels"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetAllHotels",
+          "id": "66e35607-f9d1-4378-bfa4-3e83c076e8b6",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJ1c2VySWQiOiJiYWMwYjRmYy1lODk3LTQ2YzQtOWM2MC0yY2VjMDAwN2E1MjAiLCJzdWIiOiJhZG1pbiIsImlhdCI6MTc2ODQxMTUzMiwiZXhwIjoxNzY4NDE1MTMyfQ.KrWHvr3R13nlmxDLySeH-Zd3xVjRehr3uakm7mY4ZUI",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9999/api/hotels",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9999",
+              "path": [
+                "api",
+                "hotels"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "AddRoom",
+          "id": "0b996c8d-1fe8-4639-8fb8-aea71f488e73",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJ1c2VySWQiOiJlYjdkYjdhMy01OWNkLTQ0MGEtOTNkMS00OTcyZjAzZjRiYzciLCJzdWIiOiJhZG1pbiIsImlhdCI6MTc2ODQxNzIwMywiZXhwIjoxNzY4NDIwODAzfQ.UQksRw9obTJ2MGuJWkEjd41kTU8g5s661AwZckWbD5k",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"hotelId\": \"eec58a71-5834-4056-88a4-69e4ec468c97\",\r\n    \"number\": 203,\r\n    \"available\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:9999/api/rooms",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9999",
+              "path": [
+                "api",
+                "rooms"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetRoomsUser",
+          "id": "4a5f9efb-265a-4351-8f04-05c2d5e79f3f",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInVzZXJJZCI6ImY0NGUxZDRhLTYzZmItNDFlNC1hZGYwLTZjZjY0MmE2MmMwMyIsInN1YiI6InVzZXIxIiwiaWF0IjoxNzY4NDE3ODI1LCJleHAiOjE3Njg0MjE0MjV9.wG6iGThulHkNP2kkQEisCY5q7m5L_l6BJchJxnPio0s",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9999/api/rooms",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9999",
+              "path": [
+                "api",
+                "rooms"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetRecommendRooms",
+          "id": "388f7eaa-4624-42bf-b344-cae134607f32",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInVzZXJJZCI6ImY0NGUxZDRhLTYzZmItNDFlNC1hZGYwLTZjZjY0MmE2MmMwMyIsInN1YiI6InVzZXIxIiwiaWF0IjoxNzY4NDE3ODI1LCJleHAiOjE3Njg0MjE0MjV9.wG6iGThulHkNP2kkQEisCY5q7m5L_l6BJchJxnPio0s",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9999/api/rooms/recommend",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9999",
+              "path": [
+                "api",
+                "rooms",
+                "recommend"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "id": "6804a61b-6967-468e-bbfc-6e32858a6eed",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ],
+      "id": "5b051350-64d7-4b80-9475-869515587313"
+    }
+  ]
+}
