@@ -34,6 +34,8 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     @Query("UPDATE Booking b SET b.status = :status WHERE b.id = :id")
     void updateBookingStatus(@Param("id") UUID id, @Param("status") Booking.Status status);
 
+
+
     // Проверка пересечений дат
     @Query("""
         SELECT COUNT(b) > 0 FROM Booking b 
@@ -52,4 +54,5 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     );
 
     List<Booking> findByUserId(UUID userId);
+
 }

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -21,7 +22,7 @@ public class RoomAvailabilityController {
 
     private final RoomRepository roomRepository;
 
-    @PostMapping("/{hotelId}/confirm-availability")
+    @PostMapping("/{roomId}/confirm-availability")
     public ResponseEntity<Room> confirmAvailability(
             @PathVariable UUID roomId) {
 
@@ -64,5 +65,13 @@ public class RoomAvailabilityController {
         List<Room> room = roomRepository.findByHotelIdAndAvailableTrue(hotelId);
 
         return ResponseEntity.ok(room);
+    }
+
+    @PostMapping("/{roomId}/booked")
+    public ResponseEntity<Void> booked(@PathVariable UUID roomId) {
+
+        roomRepository.incrementTimesBooked(roomId);
+
+        return ResponseEntity.ok().build();
     }
 }

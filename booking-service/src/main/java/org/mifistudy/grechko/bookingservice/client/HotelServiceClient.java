@@ -15,13 +15,12 @@ public interface HotelServiceClient {
     ResponseEntity<RoomInfo> confirmAvailability(
             @PathVariable UUID roomId);
 
-    @PostMapping("/{roomId}/release")
-    void releaseLock(
-            @PathVariable UUID roomId,
-            @RequestParam String lockId);
 
     @PostMapping("/{hotelId}/find-available")
     ResponseEntity<List<RoomInfo>> findAvailableRooms(@PathVariable UUID hotelId);
+
+    @PostMapping("/{roomId}/booked")
+    ResponseEntity<Void> booked(@PathVariable UUID roomId);
 
     // DTO для ответа от hotel-service
     @Data

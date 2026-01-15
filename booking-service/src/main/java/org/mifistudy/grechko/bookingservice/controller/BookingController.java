@@ -106,9 +106,15 @@ public class BookingController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<BookingResponse> getBooking(
             @PathVariable UUID id,
-            @AuthenticationPrincipal Jwt jwt) {
+            @RequestHeader("Authorization") String authHeader) {
 
-        UUID userId = UUID.fromString(jwt.getClaim("userId"));
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Missing token");
+        }
+
+        String token = authHeader.substring(7);
+
+        UUID userId = UUID.fromString(jwtUtil.extractUserId(token));
         log.info("User {} requesting booking {}", userId, id);
 
         Booking booking = bookingRepository.findById(id)
@@ -132,9 +138,15 @@ public class BookingController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> cancelBooking(
             @PathVariable UUID id,
-            @AuthenticationPrincipal Jwt jwt) {
+            @RequestHeader("Authorization") String authHeader) {
 
-        UUID userId = UUID.fromString(jwt.getClaim("userId"));
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Missing token");
+        }
+
+        String token = authHeader.substring(7);
+
+        UUID userId = UUID.fromString(jwtUtil.extractUserId(token));
         log.info("User {} cancelling booking {}", userId, id);
 
         Booking booking = bookingRepository.findById(id)

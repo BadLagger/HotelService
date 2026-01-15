@@ -87,6 +87,13 @@ public class BookingService {
                         .build();
 
                 savedBooking = bookingRepository.save(booking);
+
+                ResponseEntity<Void> response = hotelServiceClient.booked(choose.getId());
+
+                if (!response.getStatusCode().is2xxSuccessful()) {
+                    log.error("Can't increase times booked");
+                }
+
             } catch(Exception e) {
                 log.error("Can't get available room: {}", e.getMessage());
                 throw new RuntimeException("Can't get available room!");
@@ -96,12 +103,14 @@ public class BookingService {
             roomId = request.getRoomId();
 
             if (bookingRepository.existsByHotelIdAndRoomId(hotelId, roomId)) {
-                List<Booking.Status> statuses = List.of(Booking.Status.COMPLETED, Booking.Status.CANCELLED);
+                log.info("Room and hotel exists");
+                List<Booking.Status> statuses = List.of(Booking.Status.CONFIRMED, Booking.Status.PENDING);
                 if (bookingRepository.existsOverlappingBooking(hotelId, roomId,
                         statuses,
                         request.getStartDate(), request.getEndDate())) {
                     throw new RuntimeException("Rooms already busy!");
                 }
+            }
 
                 // Временно блокируем номер на проверку доступности
                 Booking booking = Booking
@@ -127,8 +136,16 @@ public class BookingService {
                     HotelServiceClient.RoomInfo roomInfo = response.getBody();
 
                     if (roomInfo != null) {
+                        booking.setStatus(Booking.Status.CONFIRMED);
                         bookingRepository.updateBookingStatus(savedBooking.getId(), Booking.Status.CONFIRMED);
+                        ResponseEntity<Void> responseBooked = hotelServiceClient.booked(savedBooking.getId());
+
+                        if (!responseBooked.getStatusCode().is2xxSuccessful()) {
+                            log.error("Can't increase times booked");
+                        }
+
                     } else {
+                        booking.setStatus(Booking.Status.CANCELLED);
                         bookingRepository.updateBookingStatus(savedBooking.getId(), Booking.Status.CANCELLED);
                     }
                 } catch (Exception e) {
@@ -136,7 +153,6 @@ public class BookingService {
                     bookingRepository.updateBookingStatus(savedBooking.getId(), Booking.Status.CANCELLED);
                     throw new RuntimeException("Service Connection Timeout");
                 }
-            }
         }
 
         if (savedBooking != null) {
