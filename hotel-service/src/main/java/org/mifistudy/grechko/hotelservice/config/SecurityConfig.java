@@ -35,7 +35,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/public/**",
                                 "/actuator/**",
-                                "/hotels/status"
+                                "/hotels/status",
+                                "/internal/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

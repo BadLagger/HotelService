@@ -2,6 +2,8 @@ package org.mifistudy.grechko.hotelservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mifistudy.grechko.hotelservice.dto.AvailabilityRequest;
+import org.mifistudy.grechko.hotelservice.dto.AvailabilityResponse;
 import org.mifistudy.grechko.hotelservice.dto.RoomRequest;
 import org.mifistudy.grechko.hotelservice.dto.RoomResponse;
 import org.mifistudy.grechko.hotelservice.entity.Hotel;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j

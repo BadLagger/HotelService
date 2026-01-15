@@ -1,0 +1,146 @@
+package org.mifistudy.grechko.bookingservice.service;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.mifistudy.grechko.bookingservice.client.HotelServiceClient;
+import org.mifistudy.grechko.bookingservice.dto.BookingRequest;
+import org.mifistudy.grechko.bookingservice.entity.Booking;
+import org.mifistudy.grechko.bookingservice.repository.BookingRepository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.UUID;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class BookingService {
+
+    private final BookingRepository bookingRepository;
+    private final HotelServiceClient hotelServiceClient;
+
+    @Transactional
+    public Booking createBooking(UUID userId, BookingRequest request) {
+
+        Booking savedBooking = null;
+
+        log.info("Creating booking for user {}: {}", userId, request);
+
+        UUID roomId;
+        UUID hotelId = request.getHotelId();
+
+        if (request.isAutoSelect()) {
+            // Автоподбор доступной комнаты
+            try {
+                ResponseEntity<List<HotelServiceClient.RoomInfo>> availableRoomsResponse = hotelServiceClient.findAvailableRooms(hotelId);
+
+                if (!availableRoomsResponse.getStatusCode().is2xxSuccessful()) {
+                    log.error("Error response from hotel-service: {}", availableRoomsResponse.getStatusCode());
+                    throw new RuntimeException("Error response from hotel-service");
+                }
+
+                var availableRooms = availableRoomsResponse.getBody();
+
+                if ((availableRooms == null) || availableRooms.isEmpty()) {
+                    log.error("Empty list of available rooms");
+                    throw new RuntimeException("Empty list of available rooms");
+                }
+
+                availableRooms.sort(Comparator.comparing(HotelServiceClient.RoomInfo::getTimesBooked));
+                HotelServiceClient.RoomInfo choose = null;
+
+                for (var room : availableRooms) {
+                    if (bookingRepository.existsByHotelIdAndRoomId(hotelId, room.getId())) {
+                        List<Booking.Status> statuses = List.of(Booking.Status.COMPLETED, Booking.Status.CANCELLED);
+                        if (!bookingRepository.existsOverlappingBooking(hotelId, room.getId(),
+                                statuses,
+                                request.getStartDate(), request.getEndDate())) {
+                            choose = room;
+                            break;
+                        }
+                    } else {
+                        choose = room;
+                        break;
+                    }
+                }
+
+                if (choose == null) {
+                    log.error("All rooms are busy in the hotel!");
+                    throw new RuntimeException("All rooms aare busy in the hotel!");
+                }
+
+                Booking booking = Booking
+                        .builder()
+                        .userId(userId)
+                        .hotelId(hotelId)
+                        .roomId(choose.getId())
+                        .startDate(request.getStartDate())
+                        .endDate(request.getEndDate())
+                        .status(Booking.Status.CONFIRMED)
+                        .build();
+
+                savedBooking = bookingRepository.save(booking);
+            } catch(Exception e) {
+                log.error("Can't get available room: {}", e.getMessage());
+                throw new RuntimeException("Can't get available room!");
+            }
+        } else {
+            roomId = request.getRoomId();
+
+            if (bookingRepository.existsByHotelIdAndRoomId(hotelId, roomId)) {
+                List<Booking.Status> statuses = List.of(Booking.Status.COMPLETED, Booking.Status.CANCELLED);
+                if (bookingRepository.existsOverlappingBooking(hotelId, roomId,
+                        statuses,
+                        request.getStartDate(), request.getEndDate())) {
+                    throw new RuntimeException("Rooms already busy!");
+                }
+
+                // Временно блокируем номер на проверку доступности
+                Booking booking = Booking
+                        .builder()
+                        .userId(userId)
+                        .hotelId(hotelId)
+                        .roomId(roomId)
+                        .startDate(request.getStartDate())
+                        .endDate(request.getEndDate())
+                        .status(Booking.Status.PENDING)
+                        .build();
+
+                savedBooking = bookingRepository.save(booking);
+
+                try {
+                    ResponseEntity<HotelServiceClient.RoomInfo> response = hotelServiceClient.confirmAvailability(roomId);
+
+                    if (!response.getStatusCode().is2xxSuccessful()) {
+                        log.error("Error response from hotel-service: {}", response.getStatusCode());
+                        throw new RuntimeException("Error response from hotel-service");
+                    }
+
+                    HotelServiceClient.RoomInfo roomInfo = response.getBody();
+
+                    if (roomInfo != null) {
+                        bookingRepository.updateBookingStatus(savedBooking.getId(), Booking.Status.CONFIRMED);
+                    } else {
+                        bookingRepository.updateBookingStatus(savedBooking.getId(), Booking.Status.CANCELLED);
+                    }
+                } catch (Exception e) {
+                    log.error("Booking request {} has failed: {}", savedBooking.getId(), e.getMessage());
+                    bookingRepository.updateBookingStatus(savedBooking.getId(), Booking.Status.CANCELLED);
+                    throw new RuntimeException("Service Connection Timeout");
+                }
+            }
+        }
+
+        if (savedBooking != null) {
+            log.info("{} booking successful created!", savedBooking.getId());
+        } else {
+            log.error("Booking creation error");
+            throw new RuntimeException("Booking creation error");
+        }
+
+        return savedBooking;
+    }
+}

@@ -40,6 +40,31 @@ logging:
   level:
     org.springframework.security: DEBUG
 
+feign:
+  client:
+    config:
+      default: # Глобальные настройки для всех Feign клиентов
+        connectTimeout: 5000
+        readTimeout: 10000
+        loggerLevel: basic
+      hotel-service: # Настройки конкретно для hotel-service
+        connectTimeout: 3000
+        readTimeout: 8000
+        loggerLevel: full
+
+# Настройки Retry
+resilience4j:
+  retry:
+    configs:
+      default:
+        maxAttempts: 3
+        waitDuration: 500ms
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2
+    instances:
+      hotel-service:
+        baseConfig: default
+
 management:
   endpoints:
     web:
