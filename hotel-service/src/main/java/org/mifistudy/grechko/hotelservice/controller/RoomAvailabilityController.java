@@ -37,25 +37,6 @@ public class RoomAvailabilityController {
         return ResponseEntity.ok(result);
     }
 
-    /**
-     * Освободить временную блокировку
-     */
-   /* @PostMapping("/{roomId}/release")
-    public ResponseEntity<Void> releaseLock(
-            @PathVariable UUID roomId,
-            @RequestParam String lockId) {
-
-        log.info("Releasing lock {} for room {}", lockId, roomId);
-
-        // TODO: Освободить блокировку
-        // bookingLockService.releaseLock(roomId, lockId);
-
-        return ResponseEntity.ok().build();
-    }*/
-
-    /**
-     * Найти доступные комнаты в отеле на даты
-     */
     @PostMapping("/{hotelId}/find-available")
     public ResponseEntity<List<Room>> findAvailableRooms(
             @PathVariable UUID hotelId) {
