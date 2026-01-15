@@ -19,6 +19,4 @@ public class BookingResponse {
     private LocalDate startDate;
     private LocalDate endDate;
     private Booking.Status status;
-    private LocalDateTime createdAt;
-    private BigDecimal totalPrice;
 }

@@ -83,9 +83,15 @@ public class BookingController {
     @GetMapping
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<BookingResponse>> getUserBookings(
-            @AuthenticationPrincipal Jwt jwt) {
+            @RequestHeader("Authorization") String authHeader) {
 
-        UUID userId = UUID.fromString(jwt.getClaim("userId"));
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Missing token");
+        }
+
+        String token = authHeader.substring(7);
+
+        UUID userId = UUID.fromString(jwtUtil.extractUserId(token));
         log.info("Getting bookings for user {}", userId);
 
         List<Booking> bookings = bookingRepository.findByUserId(userId);

@@ -34,6 +34,7 @@ public class BookingService {
 
         if (request.isAutoSelect()) {
             // Автоподбор доступной комнаты
+            log.info("Autoselect");
             try {
                 ResponseEntity<List<HotelServiceClient.RoomInfo>> availableRoomsResponse = hotelServiceClient.findAvailableRooms(hotelId);
 
@@ -53,8 +54,10 @@ public class BookingService {
                 HotelServiceClient.RoomInfo choose = null;
 
                 for (var room : availableRooms) {
+                    log.info("Check Room {}", room.getNumber());
                     if (bookingRepository.existsByHotelIdAndRoomId(hotelId, room.getId())) {
-                        List<Booking.Status> statuses = List.of(Booking.Status.COMPLETED, Booking.Status.CANCELLED);
+                        log.info("Room {} is in bookings! Try check for status", room.getNumber());
+                        List<Booking.Status> statuses = List.of(Booking.Status.CONFIRMED, Booking.Status.PENDING);
                         if (!bookingRepository.existsOverlappingBooking(hotelId, room.getId(),
                                 statuses,
                                 request.getStartDate(), request.getEndDate())) {
@@ -62,6 +65,7 @@ public class BookingService {
                             break;
                         }
                     } else {
+                        log.info("Room {} is not presented in bookings", room.getNumber());
                         choose = room;
                         break;
                     }
@@ -69,7 +73,7 @@ public class BookingService {
 
                 if (choose == null) {
                     log.error("All rooms are busy in the hotel!");
-                    throw new RuntimeException("All rooms aare busy in the hotel!");
+                    throw new RuntimeException("All rooms are busy in the hotel!");
                 }
 
                 Booking booking = Booking
@@ -88,6 +92,7 @@ public class BookingService {
                 throw new RuntimeException("Can't get available room!");
             }
         } else {
+            log.info("Select manual");
             roomId = request.getRoomId();
 
             if (bookingRepository.existsByHotelIdAndRoomId(hotelId, roomId)) {

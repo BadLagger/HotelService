@@ -39,6 +39,7 @@ eureka:
 logging:
   level:
     org.springframework.security: DEBUG
+    org.mifistudy.grechko.bookingsevice: DEBUG
 
 feign:
   client:
